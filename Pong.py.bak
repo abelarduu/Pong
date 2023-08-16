@@ -12,10 +12,10 @@ class Object(object):
         self.col= col
         
     def move(self, cond1, cond2, cond3=None, cond4=None):
-        if cond1 and self.y >0: self.y-=2                     
-        if cond2 and self.y + self.h <= pyxel.height: self.y+=2 
-        if cond3: self.x-=1                                  
-        if cond4: self.x+=1                                     
+        if cond1 and self.y >0: self.y-=2                       #Cima
+        if cond2 and self.y + self.h <= pyxel.height: self.y+=2 #Baixo
+        if cond3: self.x-=1                                     #Esquerda
+        if cond4: self.x+=1                                     #Direita
 
     def check_collision(self, obj):
         if self.y >= obj.y and self.y<=obj.y +obj.h:

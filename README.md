@@ -25,7 +25,7 @@
 <div>
   <h3>Resultado</h3>
   <figure>
-    <img src="img/interface.png" type="image/png" alt="Interface do Game">
+    <img src="img/interface.png" type="image/png" alt="Interface do Game" width=270px>
    <img src="img/Pong.gif" type="image/gif" alt="Game gif" width=270px>
   </figure>
 </div>

@@ -9,11 +9,12 @@
   <h3>Sobre o projeto</h3>
   <div>
   <h4>🚧⚠️Em desenvolvimento...⚠️🚧</h4>
+
 </div>
-  <p>Recriando o Game Retro "Pong".</p>
-
-<p>Criado através da linguagem python, utilizando a interface gráfica da game engine Pyxel.</p>
-
+<div>
+  <p>Criando clone do game retro "Pong"</p>
+  <p>Criado através da linguagem python, utilizando a interface gráfica da game engine Pyxel.</p>
+</div>
   <p>
     <a href="https://www.python.org/">
       <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python V.3.9" ></a>

@@ -12,6 +12,7 @@ class Object(object):
         self.imgy= imgy
         self.w= w
         self.h= h
+        self.scores= 0
         
     def move(self, cond1, cond2, cond3=None, cond4=None):
         if cond1 and self.y >7: self.y-=2                     
@@ -54,6 +55,8 @@ class Game:
         self.ball.x, self.ball.y= pyxel.width/2 -3, pyxel.height/2 -3
         self.player1.y= pyxel.height/2 - (15/2)
         self.player2.y= pyxel.height/2 - (15/2)
+        self.player1.scores= 0
+        self.player2.scores= 0
         self.play= False
         
     def update(self):
@@ -106,10 +109,13 @@ class Game:
         pyxel.blt(0,0,0,0,0,110,7)
         pyxel.blt(0,pyxel.height-7,0,0,0,110,7)
         
-        for obj in self.listObject:
-            obj.draw()
+        if self.play:
+            pyxel.text(pyxel.width/2- 5 - len(str(self.player1.scores))/2 *4, 10, str(self.player1.scores), 7)
+            pyxel.text(pyxel.width/2+ 5 - len(str(self.player2.scores))/2 *4, 10, str(self.player2.scores), 7)
+            for obj in self.listObject:
+                obj.draw()
             
-        if not self.play:
+        else:
             pyxel.blt(pyxel.width/2 - 62/2,pyxel.height/2 - (20/2),0,0,8,62,22)
             for btn in self.listButtons:
                 btn.draw()

@@ -65,18 +65,7 @@ class Game:
             if self.modePlayer1: self.player2.move(cond1= self.player2.y+ 7 > self.ball.y, cond2= self.player2.y+7 < self.ball.y)
             if self.modePlayer2: self.player2.move(cond1= pyxel.btn(pyxel.KEY_UP), cond2= pyxel.btn(pyxel.KEY_DOWN))
             self.ball.move(cond1= self.ball.eixY1, cond2= self.ball.eixY2,cond3= self.ball.eixX1, cond4= self.ball.eixX2)
-
-            self.ball.check_collision(self.player1)
-            self.ball.check_collision(self.player2)
-
-            if self.ball.y >= pyxel.height - self.ball.h-7: 
-                self.ball.eixY1= True
-                self.ball.eixY2=False  
-                
-            if self.ball.y <= 7:
-                self.ball.eixY1=False
-                self.ball.eixY2 =True
-
+            
             if self.ball.check_collision(self.player1):
                 self.ball.eixX1=False
                 self.ball.eixX2 =True   
@@ -84,6 +73,22 @@ class Game:
             if self.ball.check_collision(self.player2): 
                 self.ball.eixX1= True
                 self.ball.eixX2=False 
+                
+            if self.ball.y >= pyxel.height - self.ball.h-7: 
+                self.ball.eixY1= True
+                self.ball.eixY2=False  
+                
+            if self.ball.y <= 7:
+                self.ball.eixY1=False
+                self.ball.eixY2 =True
+                
+            if self.ball.x < -3:
+                self.ball.x, self.ball.y= pyxel.width/2 -3, pyxel.height/2 -3
+                self.player2.scores+=1
+                
+            if self.ball.x > pyxel.width:
+                self.ball.x, self.ball.y= pyxel.width/2 -3, pyxel.height/2 -3
+                self.player1.scores+=1
                 
             if pyxel.btn(pyxel.KEY_R):
                 self.reset()
@@ -108,13 +113,12 @@ class Game:
         pyxel.cls(1)
         pyxel.blt(0,0,0,0,0,110,7)
         pyxel.blt(0,pyxel.height-7,0,0,0,110,7)
-        
-        if self.play:
-            pyxel.text(pyxel.width/2- 5 - len(str(self.player1.scores))/2 *4, 10, str(self.player1.scores), 7)
-            pyxel.text(pyxel.width/2+ 5 - len(str(self.player2.scores))/2 *4, 10, str(self.player2.scores), 7)
-            for obj in self.listObject:
+        for obj in self.listObject:
                 obj.draw()
-            
+                
+        if self.play:
+            pyxel.text(pyxel.width/2- 7 - len(str(self.player1.scores))/2 *4, 10, str(self.player1.scores), 7)
+            pyxel.text(pyxel.width/2+ 7 - len(str(self.player2.scores))/2 *4, 10, str(self.player2.scores), 7)
         else:
             pyxel.blt(pyxel.width/2 - 62/2,pyxel.height/2 - (20/2),0,0,8,62,22)
             for btn in self.listButtons:

@@ -34,6 +34,7 @@ class Game:
         pyxel.init(100,100,"Pong")
         
         self.play= False
+        self.pause= False
         self.modePlayer1= True
         self.modePlayer2= False
         self.btnPlayer1= Object(pyxel.width/2 - 14, pyxel.height/2 + 20, 0, 32, 35, 32, 6)
@@ -48,7 +49,7 @@ class Game:
         self.ball.eixY1= False
         self.ball.eixY2= True
         
-        self.listObject= [self.player1, self.player2, self.ball]
+        self.listObjects= [self.player1, self.player2, self.ball]
         
         pyxel.load("resources/pong.pyxres")
         pyxel.run(self.update, self.draw)
@@ -59,6 +60,7 @@ class Game:
         self.player2.y= pyxel.height/2 - (15/2)
         self.player1.scores= 0
         self.player2.scores= 0
+        self.pause=False
         self.play= False
         
     def flip_ball(self, obj):
@@ -76,66 +78,76 @@ class Game:
 
     def update(self):
         if self.play:
-            self.player1.move(cond1= pyxel.btn(pyxel.KEY_W),
-                              cond2= pyxel.btn(pyxel.KEY_S))
+            if not self.pause:
+                self.player1.move(cond1= pyxel.btn(pyxel.KEY_W),
+                                  cond2= pyxel.btn(pyxel.KEY_S))
 
-            if self.modePlayer1:
-                self.player2.move(cond1= self.player2.y+ 7 > self.ball.y,
-                                  cond2= self.player2.y+7 < self.ball.y)
-            if self.modePlayer2: 
-                self.player2.move(cond1= pyxel.btn(pyxel.KEY_UP),
-                                  cond2= pyxel.btn(pyxel.KEY_DOWN))
-                                  
-            self.ball.move(cond1= self.ball.eixY1,
-                           cond2= self.ball.eixY2,
-                           cond3= self.ball.eixX1,
-                           cond4= self.ball.eixX2)
-            
-            if self.ball.check_collision(self.player1):
-                self.ball.eixX1=False
-                self.ball.eixX2=True 
-                self.flip_ball(self.player1)
-                pyxel.play(0,0)
+                if self.modePlayer1:
+                    self.player2.move(cond1= self.player2.y+ 7 > self.ball.y,
+                                      cond2= self.player2.y+7 < self.ball.y)
+                elif self.modePlayer2: 
+                    self.player2.move(cond1= pyxel.btn(pyxel.KEY_UP),
+                                      cond2= pyxel.btn(pyxel.KEY_DOWN))
+                                      
+                self.ball.move(cond1= self.ball.eixY1,
+                               cond2= self.ball.eixY2,
+                               cond3= self.ball.eixX1,
+                               cond4= self.ball.eixX2)
                 
-            if self.ball.check_collision(self.player2): 
-                self.ball.eixX1= True
-                self.ball.eixX2=False 
-                self.flip_ball(self.player2)
-                pyxel.play(0,0)
-                
-            if self.ball.y >= pyxel.height - self.ball.h-7: 
-                self.ball.eixY1= True
-                self.ball.eixY2=False  
-                pyxel.play(0,0)
-                
-            if self.ball.y <= 7:
-                self.ball.eixY1=False
-                self.ball.eixY2 =True
-                pyxel.play(0,0)
-                
-            if self.ball.x < -3:
-                self.ball.x, self.ball.y= pyxel.width/2 -3, pyxel.height/2 -3
-                self.player2.scores+=1
-                
-            if self.ball.x > pyxel.width:
-                self.ball.x, self.ball.y= pyxel.width/2 -3, pyxel.height/2 -3
-                self.player1.scores+=1
-                
+                if self.ball.check_collision(self.player1):
+                    self.ball.eixX1=False
+                    self.ball.eixX2=True 
+                    self.flip_ball(self.player1)
+                    pyxel.play(0,0)
+                    
+                if self.ball.check_collision(self.player2): 
+                    self.ball.eixX1= True
+                    self.ball.eixX2=False 
+                    self.flip_ball(self.player2)
+                    pyxel.play(0,0)
+                    
+                if self.ball.y >= pyxel.height - self.ball.h-7: 
+                    self.ball.eixY1= True
+                    self.ball.eixY2=False  
+                    pyxel.play(0,0)
+                    
+                if self.ball.y <= 7:
+                    self.ball.eixY1=False
+                    self.ball.eixY2 =True
+                    pyxel.play(0,0)
+                    
+                if self.ball.x < -3:
+                    self.ball.x, self.ball.y= pyxel.width/2 -3, pyxel.height/2 -3
+                    self.player2.scores+=1
+                    pyxel.play(1,1)
+                    
+                if self.ball.x > pyxel.width:
+                    self.ball.x, self.ball.y= pyxel.width/2 -3, pyxel.height/2 -3
+                    self.player1.scores+=1
+                    pyxel.play(1,1)
+
+                for obj in self.listObjects:
+                    obj.draw()
+                    if obj.scores == 5:
+                        self.pause= True
+
             if pyxel.btn(pyxel.KEY_R):
                 self.reset()
+                
         else:
-
-            if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W):
+            if pyxel.btnp(pyxel.KEY_UP) or pyxel.btnp(pyxel.KEY_W):
                 self.btnPlayer1.imgx=32
                 self.btnPlayer2.imgx=0
                 self.modePlayer2= False  
-                self.modePlayer1= True  
+                self.modePlayer1= True 
+                pyxel.play(0,0)              
 
-            if pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.KEY_S):
+            if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.KEY_S):
                 self.btnPlayer2.imgx=32
                 self.btnPlayer1.imgx=0
                 self.modePlayer1=False
                 self.modePlayer2=True
+                pyxel.play(0,0)
                 
             if pyxel.btnr(pyxel.KEY_SPACE):
                 self.play= True
@@ -145,12 +157,17 @@ class Game:
         pyxel.blt(0, 0, 0, 0, 0, 110, 7)
         pyxel.blt(0, pyxel.height-7, 0, 0, 0, 110, 7)
         
-        for obj in self.listObject:
-                obj.draw()
-                
+        for obj in self.listObjects:
+            obj.draw()
+            if obj.scores == 5:
+                if obj.x < pyxel.width/2:
+                     pyxel.text(pyxel.width/2+2 - len("Player 1 Ganhou!")/2 * pyxel.FONT_WIDTH, 20, "Player 1 Ganhou!", pyxel.frame_count % 16)
+                else:pyxel.text(pyxel.width/2+2 - len("Player 2 Ganhou!")/2 * pyxel.FONT_WIDTH, 20, "Player 2 Ganhou!", pyxel.frame_count % 16)
+
         if self.play:
-            pyxel.text(pyxel.width/2- 7 - len(str(self.player1.scores))/2 *4, 10, str(self.player1.scores), 7)
-            pyxel.text(pyxel.width/2+ 7 - len(str(self.player2.scores))/2 *4, 10, str(self.player2.scores), 7)
+            pyxel.text(pyxel.width/2- 7 - len(str(self.player1.scores))/2 * pyxel.FONT_WIDTH, 10, str(self.player1.scores), 7)
+            pyxel.text(pyxel.width/2+ 7 - len(str(self.player2.scores))/2 * pyxel.FONT_WIDTH, 10, str(self.player2.scores), 7)
+            
         else:
             pyxel.blt(pyxel.width/2 - 62/2,pyxel.height/2 - (20/2), 0, 0, 8, 62, 22)
             for btn in self.listButtons:

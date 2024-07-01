@@ -1,6 +1,3 @@
-########
-# PONG #
-########
 import pyxel
 
 class Object(object):

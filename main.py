@@ -1,7 +1,7 @@
 import pyxel
 
 class Object(object):
-    def __init__(self, x: int, y: int, img: int, imgx: int, imgy: int, w: int, h: int):
+    def __init__(self, x, y, img, imgx, imgy, w, h):
         """Inicializa um objeto com posição, imagem e dimensões."""
         self.x = x
         self.y = y
@@ -25,8 +25,11 @@ class Object(object):
 
     def check_collision(self, obj):
         """Verifica se este objeto colide com outro objeto."""
-        if self.y + self.h >= obj.y and self.y <= obj.y + obj.h:
-            if self.x + self.w >= obj.x and self.x <= obj.x + obj.w:
+        if (self.y + self.h >= obj.y and
+            self.y <= obj.y + obj.h):
+            
+            if (self.x + self.w >= obj.x and
+                self.x <= obj.x + obj.w):
                 return True
 
     def draw(self):
@@ -58,7 +61,7 @@ class Game:
 
         self.listObjects = [self.player1, self.player2, self.ball]
 
-        pyxel.load("resources/pong.pyxres")
+        pyxel.load("assets/pong.pyxres")
         pyxel.run(self.update, self.draw)
 
     def reset(self):
@@ -151,14 +154,18 @@ class Game:
                 self.reset()
 
         else:
-            if pyxel.btnp(pyxel.KEY_UP) or pyxel.btnp(pyxel.KEY_W):
+            if (pyxel.btnp(pyxel.KEY_UP) or
+                pyxel.btnp(pyxel.KEY_W)):
+                
                 self.btnPlayer1.imgx = 32
                 self.btnPlayer2.imgx = 0
                 self.modePlayer2 = False
                 self.modePlayer1 = True
                 pyxel.play(0, 0)
 
-            if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.KEY_S):
+            if (pyxel.btnp(pyxel.KEY_DOWN) or
+                pyxel.btnp(pyxel.KEY_S)):
+                
                 self.btnPlayer2.imgx = 32
                 self.btnPlayer1.imgx = 0
                 self.modePlayer1 = False
